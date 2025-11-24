@@ -1,4 +1,3 @@
-# 5SDLR_PDF-MD.py
 from pathlib import Path
 import datetime as dt
 import unicodedata
@@ -7,10 +6,9 @@ import csv
 import pdfplumber
 from pdfplumber.utils.exceptions import PdfminerException
 
-# Ubicaciones (este .py está en: SDLR DATA PROCESSING/)
 ROOT_DIR = Path("../CDD ACTAS PDFS").resolve()
-OUT_DIR  = Path("../CDD_MD/Raw").resolve()           # carpeta de salida con los .md
-LOG_CSV  = OUT_DIR / "errores_pdf_md.csv"         # log de errores
+OUT_DIR  = Path("../CDD_MD/Raw").resolve()         
+LOG_CSV  = OUT_DIR / "errores_pdf_md.csv"       
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -18,9 +16,7 @@ def norm(s: str) -> str:
     return unicodedata.normalize("NFC", (s or ""))
 
 def pdf_to_md(pdf_path: Path, md_path: Path) -> tuple[bool, str]:
-    """
-    Devuelve (ok, motivo_error). ok=False si se debe saltar.
-    """
+   
     try:
         with pdfplumber.open(str(pdf_path)) as doc:
             pages = []
@@ -62,7 +58,6 @@ def main():
         else:
             fails.append((pdf.as_posix(), err))
 
-    # Guardar log de errores (si hay)
     if fails:
         LOG_CSV.parent.mkdir(parents=True, exist_ok=True)
         with LOG_CSV.open("w", newline="", encoding="utf-8-sig") as f:
@@ -70,7 +65,7 @@ def main():
             w.writerow(["archivo_pdf", "motivo"])
             w.writerows(fails)
 
-    # Resumen final
+ 
     print("✅ Conversión a Markdown finalizada")
     print(f"   Procesados: {total}")
     print(f"   OK:         {ok}")
@@ -80,3 +75,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
