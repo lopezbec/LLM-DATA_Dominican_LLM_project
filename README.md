@@ -238,7 +238,6 @@ Cada institución produce:
 
 ---
 
-Si quieres también te preparo la sección para colocar ejemplos reales (antes/después) o diagramas del flujo.
 
 
 Agradecimientos
