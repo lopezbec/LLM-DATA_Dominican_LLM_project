@@ -233,7 +233,7 @@ Cada institución produce:
 *_MD/
     Raw/     ← Markdown original convertido desde PDF
     Body/    ← Solo contenido de la sesión (útil para LLMs)
-    Meta/    ← Encabezados, índice y cierre
+    Meta/    ← Encabezados, índice y cierre.
 ```
 
 ---
