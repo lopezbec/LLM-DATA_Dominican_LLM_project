@@ -146,6 +146,100 @@ python 4CDD_cvsaexcel.py
 * **`*_Archivo Relacional.xlsx`** – el mismo reporte en Excel, con formato y links activos.
 * **`no_match.csv`** – pendientes a validar manualmente.
 
+Perfecto.
+Aquí tienes **solo lo que debes AGREGAR** al README original, sin modificar nada de lo que ya tienes.
+
+---
+
+---
+
+## 🧠 Procesamiento de Markdown (Separación en *Raw*, *Body* y *Meta*)
+
+Además del cruce entre PDFs y videos oficiales, este proyecto incluye un módulo que **procesa cada acta en formato Markdown** y la separa en tres partes útiles para análisis y entrenamiento de modelos de lenguaje.
+
+### 📌 Cámara de Diputados (CDD)
+
+Las reglas aplicadas al procesar cada archivo en `CDD_MD/Raw` son:
+
+**Inicio del cuerpo (Body):**
+
+* Se detecta la sección de **“Comprobación del cuórum”** (cualquier variante o mayúsculas/minúsculas).
+* A partir de ahí, se localiza la **primera vez** que aparece una frase de presidencia:
+
+  * “el diputado presidente”
+  * “la diputada presidenta”
+  * “el presidente”
+  * “la presidenta”
+
+**Fin del cuerpo:**
+
+* Se detecta el **último** patrón típico de cierre, como:
+
+  * “el diputado/la diputada presidenta levantó esta sesión…”
+  * “declaró cerrada la sesión…”
+  * “siendo las… (hora), el diputado/la diputada presidenta…”
+
+**Meta = encabezado + cierre**
+Meta incluye:
+
+* Todo lo anterior al inicio del Body.
+* Todo lo posterior al párrafo de cierre.
+* Índices, encabezados, firmas y notas finales.
+
+El script utilizado es:
+
+```
+CDD_MD/split_cdd_md.py
+```
+
+---
+
+### 📌 Senado de la República Dominicana (SDLR)
+
+Las actas del Senado poseen estructura más uniforme.
+El procesamiento sigue reglas específicas:
+
+**Inicio del Body:**
+
+* Se detecta la **segunda aparición** de:
+
+  * `2. COMPROBACIÓN DE QUÓRUM`
+  * `2. Comprobación de quórum`
+
+(La primera aparición suele ser parte del índice.)
+
+**Fin del Body:**
+
+* Se detecta la sección:
+
+  * `12. Cierre de la sesión`
+
+**Meta = encabezado + cierre**
+Incluye todo lo que está fuera del rango definido como cuerpo.
+
+El script utilizado es:
+
+```
+SDLR_MD/split_sdlr_md.py
+```
+
+---
+
+### 📁 Ubicación de los resultados
+
+Cada institución produce:
+
+```
+*_MD/
+    Raw/     ← Markdown original convertido desde PDF
+    Body/    ← Solo contenido de la sesión (útil para LLMs)
+    Meta/    ← Encabezados, índice y cierre
+```
+
+---
+
+Si quieres también te preparo la sección para colocar ejemplos reales (antes/después) o diagramas del flujo.
+
 
 Agradecimientos
 --
